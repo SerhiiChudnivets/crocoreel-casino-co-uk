@@ -25,7 +25,7 @@
       "heroBadge": "CrocoReel - Big Bonuses Inside",
       "ctaText": "CLAIM BONUS",
       "tagline": "Welcome Bonus Up to 1000 Free Spins",
-      "heroImage": "/uploads/5b224029ec77e17792395287c0eacdf1.webp",
+      "heroImage": "/uploads/e4d9831de2a46df363fa7435e586ad57.webp",
       "template": "homepage",
       "isHomepage": false,
       "order": 0,
@@ -95,7 +95,7 @@
       "popup_logo": "/uploads/058c8731f21b951dcb958020c2380790.webp",
       "hero_title": "CrocoReel Casino",
       "hero_subtitle": "ELKE SPIN EEN GROTE WIN",
-      "hero_image": "/uploads/5b224029ec77e17792395287c0eacdf1.webp",
+      "hero_image": "/uploads/e4d9831de2a46df363fa7435e586ad57.webp",
       "seo_title": "CrocoReel Casino UK | Play Top Slots & Live Dealers",
       "seo_description": "Welcome to CrocoReel Casino. Explore thousands of online slots, live dealer tables, fast payouts in GBP, and an exclusive welcome offer for GB players.",
       "html_head": "<link rel=\"canonical\" href=\"https://crocoreel-casino.co.uk/en-gb/\">\n<link rel=\"alternate\" href=\"https://crocoreel-casino.co.uk/\" hreflang=\"en\">\n<link rel=\"alternate\" href=\"https://crocoreel-casino.co.uk/en-gb/\" hreflang=\"en-GB\">\n<meta property=\"og:locale\" content=\"en_GB\">\n<meta property=\"og:type\" content=\"website\">\n<meta property=\"og:title\" content=\"CrocoReel Casino UK | Play Top Slots & Live Dealers\">\n<meta property=\"og:description\" content=\"Welcome to CrocoReel Casino. Explore thousands of online slots, live dealer tables, fast payouts in GBP, and an exclusive welcome offer for GB players.\">\n<meta property=\"og:url\" content=\"crocoreel-casino.co.uk/\">\n<meta property=\"og:site_name\" content= \"CrocoReel Casino\">\n",
@@ -175,9 +175,9 @@
   "button_background": "",
   "button_text_color": "#fee17e",
   "text_color": "#fefcfb",
-  "color_highlight_text": "#f3b73b",
-  "color_main_btn_text": "#fcd34b",
-  "cta_background": "#ffffff",
+  "color_highlight_text": "#e87802",
+  "color_main_btn_text": "#07264e",
+  "cta_background": "#0980c9",
   "logo": {
     "url": "/uploads/058c8731f21b951dcb958020c2380790.webp"
   },
@@ -185,7 +185,7 @@
     "url": "/uploads/058c8731f21b951dcb958020c2380790.webp"
   },
   "main_background_img": {
-    "url": "/uploads/5b224029ec77e17792395287c0eacdf1.webp"
+    "url": "/uploads/e4d9831de2a46df363fa7435e586ad57.webp"
   },
   "header_menu": [
     {
@@ -366,8 +366,8 @@
       "question": "What games can I play with my welcome free spins? "
     }
   ],
-  "_generated_at": "2026-09-14T11:42:08.589Z",
+  "_generated_at": "2026-09-14T11:49:51.306Z",
   "_version": "1.0.0",
-  "_last_deploy": "2026-09-14T11:42:09.163Z",
-  "_deploy_trigger": "5vg176"
+  "_last_deploy": "2026-09-14T11:49:51.892Z",
+  "_deploy_trigger": "qhub15"
 }
