@@ -175,8 +175,8 @@
   "button_background": "#188038",
   "button_text_color": "#ff000d",
   "text_color": "#fefcfb",
-  "color_highlight_text": "#e87802",
-  "color_main_btn_text": "#07264e",
+  "color_highlight_text": "#ae00ff",
+  "color_main_btn_text": "#aeff00",
   "cta_background": "#0980c9",
   "logo": {
     "url": "/uploads/058c8731f21b951dcb958020c2380790.webp"
@@ -366,8 +366,8 @@
       "question": "What games can I play with my welcome free spins? "
     }
   ],
-  "_generated_at": "2026-09-14T11:56:31.805Z",
+  "_generated_at": "2026-09-14T11:59:47.858Z",
   "_version": "1.0.0",
-  "_last_deploy": "2026-09-14T11:56:32.455Z",
-  "_deploy_trigger": "3vgr0c"
+  "_last_deploy": "2026-09-14T11:59:48.529Z",
+  "_deploy_trigger": "i0gvh"
 }
