@@ -5,7 +5,7 @@
   "url": "crocoreel-casino.co.uk",
   "template": "tupchiy",
   "language_code": "en",
-  "allow_indexing": false,
+  "allow_indexing": true,
   "redirect_404s_to_homepage": true,
   "use_www_version": false,
   "breadcrumbs": true,
@@ -366,8 +366,8 @@
       "question": "What games can I play with my welcome free spins? "
     }
   ],
-  "_generated_at": "2026-09-15T13:44:53.027Z",
+  "_generated_at": "2026-09-15T15:31:11.619Z",
   "_version": "1.0.0",
-  "_last_deploy": "2026-09-15T13:44:53.600Z",
-  "_deploy_trigger": "uhhfva"
+  "_last_deploy": "2026-09-15T15:31:12.327Z",
+  "_deploy_trigger": "y4cba"
 }
