@@ -337,7 +337,7 @@
   },
   "header_menu": [
     {
-      "link": "/login/",
+      "link": "/play/",
       "label": "Login",
       "submenu": [],
       "openInNewTab": false
@@ -522,8 +522,8 @@
       "question": "What games can I play with my welcome free spins?"
     }
   ],
-  "_generated_at": "2026-11-06T15:44:45.293Z",
+  "_generated_at": "2026-11-06T16:34:40.608Z",
   "_version": "1.0.0",
-  "_last_deploy": "2026-11-06T15:44:46.013Z",
-  "_deploy_trigger": "i9kj3n"
+  "_last_deploy": "2026-11-06T16:34:41.330Z",
+  "_deploy_trigger": "7izyco"
 }
