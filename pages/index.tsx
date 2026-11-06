@@ -6,13 +6,17 @@ interface MediaFile {
   id?: number
   name?: string
   url?: string
+  alt?: string
+  alternativeText?: string
   formats?: any
 }
 
 interface Slot {
   id?: number
   Name?: string
+  name?: string
   logo?: MediaFile | MediaFile[] | string
+  logo_alt?: string
   link?: string
 }
 
@@ -38,7 +42,9 @@ interface MenuItem {
 interface Bonus {
   id?: number
   Name?: string
+  name?: string
   logo?: MediaFile | MediaFile[] | string
+  logo_alt?: string
   link?: string
 }
 
@@ -51,6 +57,8 @@ interface FaqItem {
 interface FooterImage {
   id?: number
   link?: string
+  alt?: string
+  image_alt?: string
   image?: string | MediaFile | MediaFile[] | null
 }
 
@@ -76,7 +84,7 @@ interface CasinoData {
   hero_subtitle?: string
   hero_badge?: string
   cta_text?: string
-  logo?: { url: string; name?: string } | null
+  logo?: { url: string; name?: string; alt?: string; alternativeText?: string } | null
   accent_color?: string
   tagline?: string
   features_list?: string
@@ -95,6 +103,7 @@ interface CasinoData {
   secondary_background?: string
   button_background?: string
   button_text?: string
+  button_text_color?: string
   text_color?: string
   color_highlight_text?: string
   color_main_btn_text?: string
@@ -104,7 +113,9 @@ interface CasinoData {
   
   // Repeatable components
   Slots?: Slot[]
+  slots?: Slot[]
   Bonuses?: Bonus[]
+  bonuses?: Bonus[]
   header_menu?: MenuItem[]
   footer_menu?: MenuItem[]
   footer_images?: FooterImage[]
@@ -225,7 +236,7 @@ const styles = `
 
   .btn-primary {
     background: var(--button-bg);
-    color: var(--primary-foreground);
+    color: var(--button-text-color);
   }
 
   .btn-primary:hover {
@@ -434,14 +445,23 @@ const styles = `
   }
   
  .slot-background {
-    background: #00000070;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 1rem;
     gap: 1rem;
-    border-radius: 1rem;
+    text-align: center;
+}
+
+  .slot-play-btn {
+    background: transparent;
+    box-shadow: none;
+    font-size: 2.5rem;
+    line-height: 1;
+    padding: 0;
 }
 
   .section-title {
@@ -506,6 +526,7 @@ const styles = `
   }
 
   .slot-image {
+    display: block;
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
@@ -514,7 +535,7 @@ const styles = `
   .slot-overlay {
     position: absolute;
     inset: 0;
-    background: hsla(var(--background), 0.8);
+    background: rgba(0, 0, 0, 0.7);
     opacity: 0;
     transition: opacity 0.3s;
     display: flex;
@@ -529,7 +550,7 @@ const styles = `
   }
 
   .slot-name {
-    color: var(--primary);
+    color: #fff;
     font-weight: 700;
     font-size: 1.125rem;
   }
@@ -1268,6 +1289,7 @@ export default function TupchiyTemplate() {
   const buttonBackground = data.button_background || '#f59e0b' // default amber
   const ctaBackground = data.cta_background || buttonBackground
   const buttonText = data.button_text || '#1a202c' // default dark
+  const buttonTextColor = data.button_text_color || data.button_text || '#1a202c'
   const textColor = data.text_color || '#f7fafc' // default light
   const colorHighlightText = data.color_highlight_text || '#f59e0b'
   const colorMainBtnText = data.color_main_btn_text || 'fff'
@@ -1296,7 +1318,8 @@ export default function TupchiyTemplate() {
   const siteName = data.site_name || data.name || 'LuckySpin'
   const heroTitle = data.hero_title || 'Get 200% Bonus'
   const heroSubtitle = data.hero_subtitle || 'Up to €1,000 + 100 Free Spins'
-  const heroBadge = data.hero_badge || '🎰 Welcome Bonus'
+  const dataHeroBadge = Object.prototype.hasOwnProperty.call(data, 'heroBadge') ? data.heroBadge : data.hero_badge
+  const heroBadge = typeof dataHeroBadge === 'string' ? dataHeroBadge.trim() : ''
   const ctaText = data.cta_text || 'Play Now'
   const popupText = data.popup_text || '🎁 Welcome Bonus: 100% up to $500 + 200 Free Spins!'
   // New variable
@@ -1334,14 +1357,20 @@ export default function TupchiyTemplate() {
       --button-bg: ${buttonBackground};
       --cta-bg: ${ctaBackground};
       --button-text: ${buttonText};
+      --button-text-color: ${buttonTextColor};
       --color-main-btn: ${colorMainBtnText};
     }
   `;
 
   // Mock slots data if not provided
-  const slots = data.Slots && data.Slots.length > 0 ? data.Slots : []
+  const slots = Array.isArray(data.Slots) && data.Slots.length > 0
+      ? data.Slots
+      : Array.isArray(data.slots) ? data.slots : []
 
-  const bonuses = data.Bonuses && data.Bonuses.length > 0 ? data.Bonuses : []
+  const dataBonusFallbacks = Array.isArray(data.bonuses) ? data.bonuses : []
+  const bonuses = Array.isArray(data.Bonuses) && data.Bonuses.length > 0
+      ? data.Bonuses
+      : dataBonusFallbacks
 
   useEffect(() => {
     const handleScroll = () => {
@@ -1388,10 +1417,23 @@ export default function TupchiyTemplate() {
     if (typeof media === 'object' && 'url' in media) return media.url || ''
     return ''
   }
+  const getMediaAlt = (media?: MediaFile | MediaFile[] | string | null, fallback = '') => {
+    if (!media) return fallback
+    if (typeof media === 'string') return fallback
+    if (Array.isArray(media)) return getMediaAlt(media[0], fallback)
+    return media.alt || media.alternativeText || media.name || fallback
+  }
+
+  const getSlotDisplayName = (slot: Slot, fallbackIndex: number) => {
+    const rawName = slot.logo_alt || slot.Name || slot.name || `Slot ${fallbackIndex + 1}`
+    const trimmedName = rawName.trim()
+    return trimmedName ? `${trimmedName.charAt(0).toUpperCase()}${trimmedName.slice(1)}` : `Slot ${fallbackIndex + 1}`
+  }
   const footerImages = (Array.isArray(data.footer_images) ? data.footer_images : data.footerImages || [])
-      .map((item) => ({
+      .map((item, index) => ({
         ...item,
         imageUrl: getMediaUrl(item.image || undefined),
+        imageAlt: item.alt || item.image_alt || getMediaAlt(item.image || undefined, `Footer certification ${index + 1}`),
       }))
       .filter((item) => item.imageUrl)
 
@@ -1450,7 +1492,7 @@ export default function TupchiyTemplate() {
             <div className="header-content">
               <div className="logo">
                 <a href={normalizeUrl(urlSite)}>
-                  <img src={getMediaUrl(data.logo)} alt={siteName} className="logo-image"/>
+                  <img src={getMediaUrl(data.logo)} alt={getMediaAlt(data.logo, siteName)} className="logo-image"/>
                 </a>
               </div>
               <nav className={`nav-bar ${isMobileMenuOpen ? 'open' : ''}`}>
@@ -1558,7 +1600,7 @@ export default function TupchiyTemplate() {
           <div className="hero-overlay"></div>
           <div className="container">
             <div className="hero-content">
-              <span className="hero-badge">{heroBadge}</span>
+              {heroBadge && <span className="hero-badge">{heroBadge}</span>}
               <div className="hero-background">
                 <h1 className="hero-title">
                   <span className="hero-accent">{heroTitle}</span>
@@ -1603,11 +1645,13 @@ export default function TupchiyTemplate() {
 
                   <div className="slots-grid">
                     {slots.slice(slotStartIndex, slotStartIndex + visibleSlots).map((slot, index) => {
+                      const slotIndex = slotStartIndex + index
                       const logoUrl = getLogoUrl(slot)
+                      const slotName = getSlotDisplayName(slot, slotIndex)
                       return (
                           <div key={slot.id || index} className="slot-card">
                             {logoUrl ? (
-                                <img src={logoUrl} alt={slot.Name || `Slot ${index + 1}`} className="slot-image" />
+                                <img src={logoUrl} alt={slot.logo_alt || getMediaAlt(slot.logo, slotName)} className="slot-image" />
                             ) : (
                                 <div className="slot-image" style={{ background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem' }}>
                                   🎰
@@ -1615,9 +1659,9 @@ export default function TupchiyTemplate() {
                             )}
                             <div className="slot-overlay">
                               <div className="slot-background">
-                                <span className="slot-name">{slot.Name || `Slot ${index + 1}`}</span>
-                                <button className="btn btn-primary" onClick={() => slot.link && (window.location.href = slot.link)}>
-                                  Play
+                                <span className="slot-name">{slotName}</span>
+                                <button className="btn btn-primary slot-play-btn" aria-label="Play" onClick={() => slot.link && (window.location.href = slot.link)}>
+                                  ▶️
                                 </button>
                               </div>
                             </div>
@@ -1662,7 +1706,10 @@ export default function TupchiyTemplate() {
 
               <div className="bonuses-grid">
                 {bonuses.slice(bonusStartIndex, bonusStartIndex + visibleBonuses).map((bonus, index) => {
+                  const bonusIndex = bonusStartIndex + index
+                  const fallbackBonus = dataBonusFallbacks[bonusIndex]
                   const bonusLogo = getMediaUrl(bonus.logo)
+                  const bonusName = bonus.Name || bonus.name || fallbackBonus?.Name || fallbackBonus?.name || `Bonus ${bonusIndex + 1}`
 
                   return (
                       <div key={bonus.id || index} className="bonus-card">
@@ -1670,7 +1717,7 @@ export default function TupchiyTemplate() {
                           {bonusLogo ? (
                               <img
                                   src={bonusLogo}
-                                  alt={bonus.Name || `Bonus ${index + 1}`}
+                                  alt={bonus.logo_alt || getMediaAlt(bonus.logo, bonusName)}
 
                               />
                           ) : (
@@ -1681,7 +1728,7 @@ export default function TupchiyTemplate() {
                         </div>
 
                         <div className="bonus-content">
-                          <h3 className="bonus-name">{bonus.Name || `Bonus ${index + 1}`}</h3>
+                          <h3 className="bonus-name">{bonusName}</h3>
 
                           <button
                               className="btn btn-primary"
@@ -1787,7 +1834,7 @@ export default function TupchiyTemplate() {
               <div className="footer-top">
                 <div className="logo">
                   <a href={normalizeUrl(urlSite)}>
-                    <img src={getMediaUrl(data.logo)} alt={siteName} className="logo-image"/>
+                    <img src={getMediaUrl(data.logo)} alt={getMediaAlt(data.logo, siteName)} className="logo-image"/>
                   </a>
                 </div>
 
@@ -1803,7 +1850,7 @@ export default function TupchiyTemplate() {
                           >
                             <img
                                 src={item.imageUrl}
-                                alt={`Footer certification ${index + 1}`}
+                                alt={item.imageAlt}
                                 className="footer-certification-image"
                             />
                           </a>
@@ -1867,7 +1914,7 @@ export default function TupchiyTemplate() {
                   <div className="logo">
                     <img
                         src={getMediaUrl(data.popup_logo)}
-                        alt="Logo"
+                        alt={getMediaAlt(data.popup_logo, 'Logo')}
                         className="logo-image"
                     />
                   </div>
